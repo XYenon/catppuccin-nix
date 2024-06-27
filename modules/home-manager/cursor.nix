@@ -7,6 +7,7 @@
 let
   inherit (lib) ctp mkIf;
   cfg = config.catppuccin.pointerCursor;
+  enable = cfg.enable && pkgs.stdenv.isLinux;
 
   # "dark" and "light" can be used alongside the regular accents
   cursorAccentType = ctp.mergeEnums ctp.types.accentOption (
@@ -21,7 +22,7 @@ in
     accent = ctp.mkBasicOpt "accent" cursorAccentType "cursors";
   };
 
-  config.home.pointerCursor = mkIf cfg.enable {
+  config.home.pointerCursor = mkIf enable {
     name = "catppuccin-${cfg.flavor}-${cfg.accent}-cursors";
     package = pkgs.catppuccin-cursors.${cfg.flavor + ctp.mkUpper cfg.accent};
   };
